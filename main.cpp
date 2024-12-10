@@ -47,15 +47,12 @@ int main()
 	for (int* ptr3 = third_arr, *ptr1 = first_arr; i < first_arr_size; i++, ptr3++, ptr1++)
 	{
 		*ptr3 = *ptr1;
+		cout << *ptr3 << " ";
 	}
 	for (int* ptr3 = third_arr + first_arr_size, *ptr2 = second_arr; i < first_arr_size + second_arr_size; i++, ptr3++, ptr2++)
 	{
 		*ptr3 = *ptr2;
-	}
-
-	for (int* ptr = third_arr; ptr < third_arr + first_arr_size + second_arr_size; ptr++)
-	{
-		cout << *ptr << " ";
+		cout << *ptr3 << " ";
 	}
 
 	_getch();
