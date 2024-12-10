@@ -1,6 +1,7 @@
 #include <iostream>
 #include <conio.h>
 #include <random>
+#include <iomanip>
 
 using std::cout;
 using std::endl;
@@ -8,11 +9,24 @@ using std::cin;
 using std::random_device;
 using std::mt19937;
 using std::uniform_int_distribution;
+using std::setw;
+
+bool _presence(int* arr, int arr_size, int value) {
+	for (int i = 0; i < arr_size; ++i) {
+		if (arr[i] == value) {
+			return true;
+		}
+	}
+
+	return false;
+}
 
 int main()
 {
 	int first_arr_size;
 	int second_arr_size;
+
+	int i = 0;
 
 	cout << "Enter the size of first array: ";
 	cin >> first_arr_size;
@@ -21,7 +35,7 @@ int main()
 
 	int* first_arr = new int[first_arr_size];
 	int* second_arr = new int[second_arr_size];
-	int* third_arr = new int[first_arr_size + second_arr_size];
+	int* third_arr = new int[first_arr_size + second_arr_size] {};
 
 	random_device rd;
 	mt19937 gen(rd());
@@ -31,31 +45,40 @@ int main()
 	for (int* ptr = first_arr; ptr < first_arr + first_arr_size; ptr++)
 	{
 		*ptr = dist(gen);
-		cout << *ptr << " ";
+		cout << setw(2) << *ptr << " ";
 	}
 
 	cout << endl << "Array B:" << endl;
 	for (int* ptr = second_arr; ptr < second_arr + second_arr_size; ptr++)
 	{
 		*ptr = dist(gen);
-		cout << *ptr << " ";
+		cout << setw(2) << *ptr << " ";
 	}
 
-	cout << endl << endl << "Array C:" << endl;
-	int i = 0;
+	cout << endl << endl << "Array C:";
 
-	for (int* ptr3 = third_arr, *ptr1 = first_arr; i < first_arr_size; i++, ptr3++, ptr1++)
+	for (int* ptr1 = first_arr; ptr1 < first_arr + first_arr_size; ptr1++)
 	{
-		*ptr3 = *ptr1;
-	}
-	for (int* ptr3 = third_arr + first_arr_size, *ptr2 = second_arr; i < first_arr_size + second_arr_size; i++, ptr3++, ptr2++)
-	{
-		*ptr3 = *ptr2;
+		for (int* ptr2 = second_arr; ptr2 < second_arr + second_arr_size; ptr2++)
+		{
+			if (*ptr1 == *ptr2 && !_presence(third_arr, i, *ptr1)) {
+				third_arr[i++] = *ptr1;
+			}
+		}
 	}
 
-	for (int* ptr = third_arr; ptr < third_arr + first_arr_size + second_arr_size; ptr++)
+	if (i > 0)
 	{
-		cout << *ptr << " ";
+		cout << endl;
+		for (int* ptr = third_arr; ptr < third_arr + i; ptr++)
+		{
+			cout << setw(2) << *ptr << " ";
+		}
+		cout << endl;
+	}
+	else
+	{
+		cout << " empty" << endl;
 	}
 
 	_getch();
